@@ -1,0 +1,556 @@
+<!doctype html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+
+    <title>Azure Meetup Ruhrgebiet - B2C - Sign In</title>
+
+    <style>
+
+        .social,
+        .social+.divider {
+            display: none;
+        }
+
+        .internal-login .social,
+        .internal-login .social+.divider {
+            display: block;
+        }
+
+        .card {
+
+            border-radius: 0px !important;
+            max-width: 400px;
+            margin: 40px auto 0px;
+            padding: 40px;
+            border: none;
+        }
+
+        .error.pageLevel {
+            color: red;
+        }
+
+        body {
+            background-image: url("https://azureruhrgebietstorage.blob.core.windows.net/customlogin/intro-start.jpg");
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        @media(max-width:480px) {
+            body {
+                background-image: none !important;
+                background-color: #343a40;
+            }
+
+            .divider h2 {
+                margin: 10px 0 !important;
+            }
+
+            .login-logo {
+                height: 80px !important;
+                margin-top: -65px !important;
+            }
+
+            .backfade {
+                display: none;
+            }
+        }
+
+        ::-moz-placeholder {
+            color: transparent;
+        }
+
+        ::-moz-placeholder {
+            color: transparent;
+        }
+
+        :-ms-input-placeholder {
+            color: transparent;
+        }
+
+        ::-webkit-input-placeholder {
+            color: transparent;
+        }
+
+        label,
+        .password-label {
+            margin-top: 10px;
+        }
+
+        #api ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        #api[data-name='IdpSelections'] ul {
+            text-align: center;
+        }
+
+        #api[data-name='Phonefactor'] .buttons button#cancel {
+            width: 32%;
+        }
+
+        #api[data-name='SelfAsserted']>div:first-child {
+            display: none;
+        }
+
+        #createAccount {
+            cursor: pointer;
+            padding-left: 2px;
+            transition: 0.5s all;
+            -moz-transition: 0.5s all;
+            -ms-transition: 0.5s all;
+            -o-transition: 0.5s all;
+            -webkit-transition: 0.5s all;
+        }
+
+        #email_ver_input {
+            margin-bottom: 10px 0;
+        }
+
+
+        #forgotPassword {
+            clear: right;
+            cursor: pointer;
+            float: right;
+            margin-top: 10px;
+            transition: 0.5s all;
+            -moz-transition: 0.5s all;
+            -ms-transition: 0.5s all;
+            -o-transition: 0.5s all;
+            -webkit-transition: 0.5s all;
+        }
+
+        #logonIdentifier,
+        #password,
+        #signInName {
+            background-color: #fff !important;
+            background-image: none !important;
+            border: 1px solid #ccc;
+            border-radius: 2px !important;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+            color: #555;
+            display: block;
+            font-size: 14px;
+            height: 40px;
+            line-height: 1.42857143;
+            margin: 10px 0;
+            padding: 6px 12px;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+            width: 100% !important;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s !important;
+        }
+
+        #logo img {
+            float: left;
+            height: 50px;
+            width: 50px;
+        }
+
+        .accountButton {
+            border: none;
+            color: whitesmoke;
+            width: 100%;
+            padding: 10px 16px;
+        }
+
+        .accountButton:hover {
+            border: none
+        }
+
+        .attrEntry,
+        .phoneEntry {
+            margin-bottom: 15px;
+            padding-top: 0;
+        }
+
+        .attrEntry input,
+        .attrEntry select,
+        .phoneEntry input,
+        .phoneEntry select,
+        #codeVerification input {
+            background-color: #fff !important;
+            background-image: none !important;
+            border: 1px solid #ccc !important;
+            border-radius: 2px !important;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+            color: #555;
+            display: block;
+            font-size: 14px;
+            height: 40px;
+            line-height: 1.42857143;
+            padding: 6px 12px;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+            width: 100% !important;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s !important;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s !important;
+        }
+
+        .attrEntry input:invalid,
+        .phoneEntry input:invalid,
+        #codeVerification input:invalid {
+            border-color: inherit;
+        }
+
+        .attrEntry.validate input:invalid,
+        .phoneEntry.validate input:invalid,
+        #codeVerification.validate input:invalid {
+            border-color: #a94442 !important;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+        }
+
+        .attrEntry #email_intro {
+            display: none !important;
+        }
+
+        .attrEntry .error.itemLevel,
+        .attrEntry .helpText,
+        .phoneEntry .error.itemLevel,
+        .phoneEntry .helpText,
+        #codeVerification .error.itemLevel,
+        #codeVerification .helpText {
+            display: none;
+        }
+
+        .attrEntry .tiny,
+        .phoneEntry .tiny,
+        #codeVerification .tiny {
+            display: none;
+        }
+
+        .buttons button {
+            background-image: none;
+            border: 0px solid transparent;
+            border-radius: 0px;
+            cursor: pointer;
+            display: inline-block;
+            height: inherit;
+            line-height: 1.42857143;
+            margin: 0;
+            padding: 6px 12px;
+            text-align: center;
+            touch-action: manipulation;
+            user-select: none;
+            vertical-align: middle;
+            white-space: nowrap;
+            width: inherit;
+            -moz-user-select: none;
+            -ms-touch-action: manipulation;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .buttons {
+            margin: 20px 0;
+            display: flex;
+        }
+
+        .buttons button#cancel,
+        .buttons button#email_ver_but_edit,
+        .buttons button#email_ver_but_resend {
+            background-color: #D9DEE8;
+            border-color: #ccc;
+            color: #333;
+        }
+
+        .buttons button#cancel {
+            width: 49.9%;
+            margin-left: 10px;
+        }
+
+        @media(max-width:767px) {
+            .buttons button#cancel {
+                width: 48.9%;
+            }
+        }
+
+        .buttons button:hover#cancel,
+        .buttons button:hover#email_ver_but_edit,
+        .buttons button:hover#email_ver_but_resend {
+            background-color: #0069d9;
+            background-image: none;
+            color: #fff;
+        }
+
+        .buttons button#continue {
+            background-color: #007bff;
+            color: #fff;
+            width: 49%;
+        }
+        .buttons button:hover#continue {
+            background-color: #0069d9;
+            background-image: none;
+            color: #fff;
+        }
+
+        .buttons button[disabled]#continue,
+        .buttons button[disabled]:hover#continue {
+            background-color: #007bff;
+            background-image: none;
+            color: #fff;
+            cursor: not-allowed;
+        }
+
+        .buttons button#email_ver_but_resend,
+        .buttons button#email_ver_but_verify {
+            margin-top: 5px;
+        }
+
+        .buttons button#email_ver_but_send,
+        .buttons button#email_ver_but_verify {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .buttons button:hover#email_ver_but_send,
+        .buttons button:hover#email_ver_but_verify {
+            background-color: #0069d9;
+            background-image: none;
+            color: #fff;
+        }
+
+        .buttons button#verifyCode,
+        .buttons button#verifyPhone {
+            background-color: green;
+            border-bottom: 5px solid green;
+            border-color: green;
+            color: #fff;
+            margin-right: 9px;
+            width: 32%;
+        }
+
+        .create p {
+            text-align: center;
+        }
+
+        .divider {
+            margin: 0 auto;
+            position: relative;
+            text-align: center;
+            text-shadow: 0 1px 0 #fff;
+        }
+
+        .divider h2 {
+            color: #ccc;
+            line-height: 20px;
+            margin: 20px 0;
+            text-align: center;
+            text-transform: lowercase;
+        }
+
+        .divider h2:after,
+        .divider h2:before {
+            content: "";
+            height: 1px;
+            position: absolute;
+            top: 10px;
+            width: 40%;
+        }
+
+        .divider h2:after {
+            background: rgb(126, 126, 126);
+            background: linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            background: -moz-linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            background: -ms-linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            background: -o-linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            background: -webkit-linear-gradient(left, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            right: 0;
+        }
+
+        .divider h2:before {
+            background: rgb(126, 126, 126);
+            background: linear-gradient(right, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            background: -moz-linear-gradient(right, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            background: -ms-linear-gradient(right, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            background: -o-linear-gradient(right, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            background: -webkit-linear-gradient(right, rgba(126, 126, 126, 1) 0%, rgba(255, 255, 255, 1) 100%);
+            left: 0;
+        }
+
+        .entry .buttons button {
+            background-color: #007bff;
+            border-radius: 0px;
+            line-height: 1.3333333;
+            padding: 10px 16px;
+            color: #fff;
+            width: 100%;
+        }
+
+        .entry .buttons button:hover {
+            background-color: #0069d9;
+            border-color: #0069d9;
+            color: #fff;
+        }
+
+        .error.itemLevel p {
+            color: #a94442;
+        }
+
+        .error.itemLevel p:before {
+            content: "\e101";
+            display: inline-block;
+            font-family: 'Glyphicons Halflings';
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1;
+            margin-right: 3px;
+            position: relative;
+            top: 1px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .highlightError {
+            border-color: #a94442 !important;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+            outline: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075) !important;
+        }
+
+        .image-center {
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .intro {
+            display: none;
+        }
+
+        .localAccount .divider {
+            display: none;
+        }
+
+        .login-logo {
+            height: 140px;
+            margin-top: -90px;
+        }
+
+        .options {
+            margin-left: auto;
+            margin-right: auto;
+            padding-bottom: 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .panel-body {
+            padding: 15px 30px !important;
+            background: white;
+        }
+
+
+        .phonefactor_container,
+        .self_asserted_container,
+        .unified_container {
+            padding-top: 80px;
+        }
+
+        .phoneNumber .type {
+            display: inline-block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            max-width: 100%;
+        }
+
+        .phoneNumbers {
+            margin-top: 20px;
+        }
+
+        .social {
+            margin-top: 30px;
+        }
+
+        .verify {
+            margin-top: 5px;
+            padding-top: 0 !important;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .working {
+
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .working:before {
+            background-color: rgba(0, 0, 0, 0.5);
+            content: "";
+            display: block;
+            left: 0;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        .working:after {
+            content: "";
+            border: 10px solid #EEF0F2;
+            border-radius: 50%;
+            border-top: 10px solid #007bff;
+            width: 50px;
+            height: 50px;
+            -webkit-animation: spin 2s linear infinite;
+            animation: spin 2s linear infinite;
+            margin: auto;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        #simplemodal-overlay {
+            z-index: 900 !important;
+        }
+
+        #simplemodal-container {
+            color: white;
+            height: 150px !important;
+            background-color: #007bff !important;
+            z-index: 901 !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-title text-center">
+                <img src="https://azureruhrgebietstorage.blob.core.windows.net/customlogin/Logo.png">
+            </div>
+            <div id="api"></div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a class="navbar-brand" routerLink="/">Azure Meetup Ruhrgebiet - B2C Demo</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <span class="nav-link cursor-pointer" *ngIf="!isUserLoggedIn" (click)="login()"> Login </span>
+        <span class="nav-link cursor-pointer" *ngIf="isUserLoggedIn" href="#" (click)="logout()"> Logout </span>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,40 @@
+
+<div class="card-deck">
+
+  <div class="card">
+    <div class="card-body">
+      <div class="lead card-title">Token Demo</div>
+      <p class="card-text">This demonstration shows the structure of your JWT bearer token, issued by the B2C authority. Therefore, authentication is required. </p>
+      <button class="btn btn-primary float-right" routerLink="/token">
+        <i class="fas fa-lock"></i> Go to demo</button>
+    </div>
+    <div class="card-footer">
+        CanActivate Interface, MSAL
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="lead card-title">API Access Demo</div>
+      <p class="card-text">Access a protected API endpoint. If you're logged in, your JWT bearer token will be injected into the request's header.</p>
+      <button class="btn btn-primary float-right" routerLink="/api"> Go to demo</button>
+    </div>
+    <div class="card-footer">
+        HttpClient, HttpInterceptor, ASP.NET Core Authentication
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="lead card-title">Password Change Demo</div>
+      <p class="card-text">Change your password by using a custom policy .</p>
+      <a role="button" [attr.href]="passwordChangeEndpoint" class="btn btn-primary float-right">
+        <i class="fas fa-external-link-alt"></i> Go to demo
+      </a>
+    </div>
+    <div class="card-footer">
+        Identity Experiance Framework
+    </div>
+  </div>
+</div>
+

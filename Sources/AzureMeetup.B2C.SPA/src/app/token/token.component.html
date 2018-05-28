@@ -1,0 +1,13 @@
+<div class="lead">
+  Welcome to the Token Demo, {{user?.idToken["given_name"]}}
+</div>
+
+<div class="mt-4">
+  Your access token is:
+  <pre><code>{{prittyPrintAccessToken()}}</code></pre>
+</div>
+
+<div class="mt-2">
+    Your token expires in: 
+    <div class="lead">{{expirationTime}}</div>
+</div>
